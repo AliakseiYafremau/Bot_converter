@@ -1,5 +1,4 @@
 import requests
-from googletrans import Translator
 from values import currencies
 from os import getenv
 from env_handler import handler
@@ -30,11 +29,13 @@ class Converter:
 
         return rate * amount
 
+
 def is_float(s: str):
     if s.replace('.', '').isnumeric():
         return True
     else:
         return False
+
 
 if __name__ == '__main__':
     c = Converter()
