@@ -33,17 +33,18 @@ class BotConverter(telebot.TeleBot):
         @self.message_handler(content_types=['text'])
         def convert(message: telebot.types.Message):
             try:
+                refer = 'Для справки введите /start или /help'
                 text = message.text.lower()
                 possibles_values = {}
                 for currency in currencies:
                     index_currency = text.find(currency)
                     if index_currency != -1:
                         if len(set(text.split())) != len(text.split()):
-                            raise ConvertException('Нельзя перевести деньги в ту же валюту')
+                            raise ConvertException(f'Нельзя перевести деньги в ту же валюту. {refer}')
                         possibles_values.update({index_currency: currency})
 
                 if len(possibles_values) != 2:
-                    raise ConvertException('Вы должны ввести два имя валюты.')
+                    raise ConvertException(f'Вы должны ввести два имя валюты. {refer}')
 
                 base = possibles_values.pop(min(possibles_values.keys()))
                 quote = possibles_values.pop(min(possibles_values.keys()))
@@ -52,7 +53,7 @@ class BotConverter(telebot.TeleBot):
                 amount = amount.removeprefix(quote).strip()
 
                 if not is_float(amount):
-                    raise ConvertException(f'{amount} не является число')
+                    raise ConvertException(f'Не было введено число. {refer}')
 
                 amount = float(amount)
 
